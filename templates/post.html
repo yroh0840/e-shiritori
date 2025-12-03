@@ -1,0 +1,16 @@
+<h1>絵を投稿する</h1>
+
+<form action="/post" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="prev_id" value="{{ prev_id }}">
+
+  <label>タイトル</label>
+  <input type="text" name="title"><br><br>
+
+  <label>次の頭文字（任意）</label>
+  <input type="text" name="next_head"><br><br>
+
+  <label>画像</label>
+  <input type="file" name="image" required><br><br>
+
+  <button type="submit">投稿</button>
+</form>

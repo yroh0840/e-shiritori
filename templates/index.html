@@ -1,0 +1,29 @@
+<h1>絵しりとり（ロビー）</h1>
+
+{% if active_req %}
+  <div style="border:1px solid #aaa;padding:10px;margin-bottom:20px;">
+    <p>現在しりとり進行中！</p>
+    <p>残り時間: {{ remaining }} 秒</p>
+
+    {% if remaining > 0 %}
+      <p>他の人は待機中です</p>
+    {% else %}
+      <p>タイムアウトしました！誰でも挑戦できます。</p>
+    {% endif %}
+  </div>
+{% else %}
+  <p>誰も描いていません。挑戦者募集中！</p>
+{% endif %}
+
+<h2>最近の投稿</h2>
+
+<ul>
+  {% for d in drawings %}
+    <li>
+      <a href="/chain/{{ d.id }}">
+        <img src="{{ url_for('static', filename='uploads/' ~ d.image_path) }}" width="120">
+      </a>
+      {{ d.title }}
+    </li>
+  {% endfor %}
+</ul>

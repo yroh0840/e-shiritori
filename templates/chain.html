@@ -1,0 +1,14 @@
+<h1>しりとりの流れ</h1>
+
+<ul>
+  {% for d in chain %}
+    <li>
+      <img src="{{ url_for('static', filename='uploads/' ~ d.image_path) }}" width="200"><br>
+      {{ d.title }}
+    </li>
+  {% endfor %}
+</ul>
+
+<!-- <a href="/post?prev_id={{ chain[-1].id }}">続きを描く</a> -->
+<a href="/request_start/{{ chain[-1].id }}">この絵の続きに挑戦する</a>
+
