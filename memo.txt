@@ -14,3 +14,48 @@ UI大改修する前（ZIP）
 
 最終完成版（ZIP）
 
+12/3 水
+Git 初回セットアップ
+１：git init
+２：git add .
+３：git commit -m "initial commit"
+
+[日常の作業ルール（Git運用）]
+・小さな変更ごとに：git add .
+・変更内容を伝える：git commit -m "変更内容を書く"
+
+（（
+  プレフィックス　頭につける拡張子らしい
+  ・feature/ または feat/：新機能開発​
+  ・fix/ または bugfix/：バグ修正​
+  ・hotfix/：緊急修正​
+  ・refactor/：コード改善（機能変更なし）​
+  ・docs/：ドキュメント更新​
+例（画像投稿機能：git checkout -b feature/image-upload
+
+  ユーザー認証：git checkout -b feature/user-login
+
+  しりとり連鎖：git checkout -b feature/shiritori-chain）
+））
+
+・ブランチで安全に機能追加：git checkout -b feature-<機能名>
+
+・コミットツリー、mainブランチの状態や分岐を一目で把握：git log --graph --oneline --all　
+
+・作り終えたら：git checkout main ; git merge feature-<機能名>
+
+
+GitHubにログインし「New repository」をクリック
+
+リポジトリ名（例: shiritori-app）を入力
+
+公開or非公開設定やREADME初期化を選択
+
+「Create repository」をクリックしリモートURLが発行される
+
+ローカルプロジェクトで
+
+text
+git remote add origin <リモートURL>
+git push -u origin main
+で接続・初回push完了
