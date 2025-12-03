@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# 変更をステージング
+# --- Git による自動コミット & push ---
 git add .
 
-# コミット（変更がなければスキップ）
-git commit -m "auto backup"
+# 変更がある場合のみコミット
+if ! git diff-index --quiet HEAD --; then
+    git commit -m "auto backup"
+fi
 
-# main に push（初回 push なら -u を付ける）
+# main ブランチに push（初回 push の場合 -u オプション）
 git push -u origin main
 
-# ZIP バックアップ作成
+# --- ZIP バックアップ作成 ---
 python3 backup_zip.py
 
 echo "Backup complete!"

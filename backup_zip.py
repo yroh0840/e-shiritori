@@ -1,41 +1,35 @@
 import os
 import zipfile
 from datetime import datetime
-from pathlib import Path
 
-# プロジェクトフォルダ（このスクリプトが置いてある場所）
-PROJECT_DIR = Path(__file__).resolve().parent
+# プロジェクトルートを取得
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# ZIP の保存先フォルダ
-BACKUP_DIR = PROJECT_DIR / "backups"
+# バックアップフォルダ作成
+BACKUP_DIR = os.path.join(BASE_DIR, 'backups')
+os.makedirs(BACKUP_DIR, exist_ok=True)
 
-# ZIP に含めないフォルダ
-EXCLUDE = [
-    "venv",
-    "__pycache__",
-    ".git",
-    "node_modules",
-    "backups"
-]
+# ZIP ファイル名
+timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+zip_filename = os.path.join(BACKUP_DIR, f"backup_{timestamp}.zip")
 
-def should_exclude(path):
-    return any(ex in str(path) for ex in EXCLUDE)
+# ZIP に追加する対象（venv とバックアップフォルダは除外）
+EXCLUDE_DIRS = {'venv', 'backups', '.git'}
+EXCLUDE_FILES = {'.DS_Store'}
 
-def zip_project():
-    BACKUP_DIR.mkdir(exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-    zip_name = BACKUP_DIR / f"backup_{timestamp}.zip"
+def zipdir(path, ziph):
+    for root, dirs, files in os.walk(path):
+        # 除外フォルダをスキップ
+        dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS]
+        for file in files:
+            if file in EXCLUDE_FILES:
+                continue
+            filepath = os.path.join(root, file)
+            # ZIP 内のパスはプロジェクトルートからの相対パスに
+            arcname = os.path.relpath(filepath, path)
+            ziph.write(filepath, arcname)
 
-    with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED) as z:
-        for root, dirs, files in os.walk(PROJECT_DIR):
-            dirs[:] = [d for d in dirs if not should_exclude(Path(root) / d)]
-            for file in files:
-                file_path = Path(root) / file
-                if should_exclude(file_path):
-                    continue
-                z.write(file_path, file_path.relative_to(PROJECT_DIR))
+with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+    zipdir(BASE_DIR, zipf)
 
-    print(f"Backup created: {zip_name}")
-
-if __name__ == "__main__":
-    zip_project()
+print(f"Backup created: {zip_filename}")
