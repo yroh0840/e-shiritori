@@ -1,14 +1,35 @@
-<h1>しりとりの流れ</h1>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-shiritori - チェーン一覧</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+    <div class="max-w-3xl mx-auto p-6">
+        <header class="mb-6 text-center">
+            <h1 class="text-3xl font-bold mb-2">チェーン一覧</h1>
+            <p class="text-gray-600">これまでの絵しりとり履歴</p>
+        </header>
 
-<ul>
-  {% for d in chain %}
-    <li>
-      <img src="{{ url_for('static', filename='uploads/' ~ d.image_path) }}" width="200"><br>
-      {{ d.title }}
-    </li>
-  {% endfor %}
-</ul>
+        <section class="bg-white shadow p-6 rounded-2xl mb-6">
+            <div class="space-y-6">
+                {% for item in chain %}
+                <div class="p-4 border rounded-xl bg-gray-50">
+                    <p class="text-lg font-medium">{{ item.word }}</p>
+                    <img src="{{ url_for('static', filename='uploads/' ~ item.image_path) }}" class="mt-3 rounded-lg" />
+                    <p class="text-sm text-gray-500 mt-2">投稿日時: {{ item.created_at }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
 
-<!-- <a href="/post?prev_id={{ chain[-1].id }}">続きを描く</a> -->
-<a href="/request_start/{{ chain[-1].id }}">この絵の続きに挑戦する</a>
-
+        <div class="text-center mt-10">
+            <a href="/" class="inline-block bg-gray-700 text-white px-6 py-3 rounded-xl shadow hover:bg-gray-800 transition">
+                トップへ戻る
+            </a>
+        </div>
+    </div>
+</body>
+</html>
