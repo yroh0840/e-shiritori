@@ -6,36 +6,45 @@
     <title>e-shiritori</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen text-gray-800">
+
+<body class="bg-pink-50 min-h-screen text-pink-900">
     <div class="max-w-2xl mx-auto p-6">
-        <header class="mb-6 text-center">
-            <h1 class="text-3xl font-bold mb-2">e-shiritori</h1>
-            <p class="text-gray-600">AI とつなげる絵しりとり</p>
+
+        <header class="mb-8 text-center">
+            <h1 class="text-4xl font-bold text-pink-600 drop-shadow">
+                🎀 e-shiritori 🎀
+            </h1>
+            <p class="text-pink-500 mt-2 text-lg">AI とつながる、可愛い絵しりとり</p>
         </header>
 
-        <section class="bg-white shadow p-6 rounded-2xl mb-6">
-            <h2 class="text-xl font-semibold mb-4">現在のチェーン</h2>
+        <!-- チェーン -->
+        <section class="bg-white/90 backdrop-blur shadow-pink-100 shadow-lg p-6 rounded-3xl mb-6 border border-pink-100">
+            <h2 class="text-xl font-semibold text-pink-600 mb-4">🌸 現在のチェーン</h2>
 
             <div class="space-y-4">
                 {% for item in drawings %}
-                <div class="border rounded-xl p-4 bg-gray-50">
-                    <p class="font-medium">{{ item.word }}</p>
-                    <img src="{{ url_for('static', filename='uploads/' ~ item.image_path) }}" class="mt-2 rounded-lg" />
+                <div class="border border-pink-100 rounded-2xl p-4 bg-pink-50/50 shadow-sm">
+                    <p class="font-medium text-pink-700">{{ item.title }}</p>
+                    <img src="{{ url_for('static', filename='uploads/' ~ item.image_path) }}" class="mt-3 rounded-xl shadow" />
                 </div>
                 {% endfor %}
             </div>
         </section>
 
-        <section class="bg-white shadow p-6 rounded-2xl mb-6">
-            <h2 class="text-xl font-semibold mb-3">残りリクエスト</h2>
-            <p class="text-2xl font-bold text-blue-600">{{ remaining }}</p>
+        <!-- 残り時間 -->
+        <section class="bg-white/90 backdrop-blur shadow-lg p-6 rounded-3xl mb-8 border border-pink-100 text-center">
+            <h2 class="text-xl font-semibold text-pink-600 mb-3">⏳ 残りリクエスト時間</h2>
+            <p class="text-4xl font-bold text-pink-600">{{ remaining }}</p>
         </section>
 
-        <section class="text-center mt-8">
-            <a href="/post" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition">
-                新しい絵を投稿する
+        <!-- ボタン -->
+        <div class="text-center">
+            <a href="/post"
+               class="inline-block bg-pink-400 text-white font-bold px-8 py-4 rounded-3xl shadow hover:bg-pink-500 hover:-translate-y-1 active:scale-95 transition">
+                🎨 新しい絵を投稿する
             </a>
-        </section>
+        </div>
+
     </div>
 </body>
 </html>
