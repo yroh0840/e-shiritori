@@ -50,30 +50,44 @@ class RequestState(db.Model):
 # ルーティング
 # ------------------------------------
 
+# @app.route('/')
+# def index():
+#     # 進行中のリクエストを取得
+#     active_req = RequestState.query.filter_by(active=True).first()
+
+#     remaining = None
+#     if active_req:
+#         elapsed = (datetime.utcnow() - active_req.start_time).total_seconds()
+#         remaining = max(0, active_req.limit_seconds - int(elapsed))
+
+#         # タイムアウトしたら無効化
+#         if remaining <= 0:
+#             active_req.active = False
+#             db.session.commit()
+
+#     # 最新の絵を20件
+#     drawings = Drawing.query.order_by(Drawing.id.desc()).limit(20).all()
+
+#     return render_template(
+#         "index.html",
+#         drawings=drawings,
+#         active_req=active_req,
+#         remaining=remaining
+#     )
+
 @app.route('/')
 def index():
-    # 進行中のリクエストを取得
-    active_req = RequestState.query.filter_by(active=True).first()
-
-    remaining = None
-    if active_req:
-        elapsed = (datetime.utcnow() - active_req.start_time).total_seconds()
-        remaining = max(0, active_req.limit_seconds - int(elapsed))
-
-        # タイムアウトしたら無効化
-        if remaining <= 0:
-            active_req.active = False
-            db.session.commit()
-
-    # 最新の絵を20件
-    drawings = Drawing.query.order_by(Drawing.id.desc()).limit(20).all()
+    # 末尾の絵 = しりとり一覧
+    subq = db.session.query(Drawing.previous_id).filter(Drawing.previous_id != None)
+    last_drawings = Drawing.query.filter(~Drawing.id.in_(subq))\
+                                 .order_by(Drawing.created_at.desc())\
+                                 .all()
 
     return render_template(
         "index.html",
-        drawings=drawings,
-        active_req=active_req,
-        remaining=remaining
+        chains=last_drawings
     )
+
 
 
 

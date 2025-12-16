@@ -1,17 +1,13 @@
 #!/bin/bash
-
-# --- Git による自動コミット & push ---
 git add .
 
-# 変更がある場合のみコミット
 if ! git diff-index --quiet HEAD --; then
-    git commit -m "auto backup"
+    git commit -m "auto backup $(git branch --show-current)"
 fi
 
-# main ブランチに push（初回 push の場合 -u オプション）
-git push -u origin main
+# 現在のブランチ名を取得して push
+CURRENT_BRANCH=$(git branch --show-current)
+git push -u origin "$CURRENT_BRANCH"
 
-# --- ZIP バックアップ作成 ---
 python3 backup_zip.py
-
 echo "Backup complete!"
